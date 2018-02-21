@@ -1,0 +1,16 @@
+{
+    "name": "ttskch/php-heroku-docker-applyer",
+    "description": "Enable your PHP project to deploy to Heroku via Container Registry.",
+    "keywords": ["php", "heroku", "docker"],
+    "homepage": "https://github.com/ttskch/php-heroku-docker-applyer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Takashi Kanemoto",
+            "email": "kanemoto.takashi@gmail.com"
+        }
+    ],
+    "bin": [
+        "bin/php-heroku-docker-applyer"
+    ]
+}

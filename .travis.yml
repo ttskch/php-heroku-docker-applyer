@@ -1,0 +1,22 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - REGISTRY=registry.heroku.com
+    - NAME=ttskchtest/web
+
+before_script:
+  - docker build . -t ${REGISTRY}/${NAME}
+
+script:
+#  - docker run ${REGISTRY}/${NAME} bin/phpunit
+  - echo 'no tests yet'
+
+after_success:
+  - if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "master" ]; then
+      docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" ${REGISTRY};
+      docker push ${REGISTRY}/${NAME};
+    fi

@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+if (!isset($argv[1])) {
+    exit('Usage: bin/php-heroku-docker-applyer <appname>' . PHP_EOL);
+}
+
+$appname = $argv[1];
+
+$filesToBeCopied = [
+    [
+        'src' => __DIR__ . '/../Dockerfile',
+        'dest' => __DIR__ . '/../../../../Dockerfile',
+    ],
+    [
+        'src' => __DIR__ . '/../.travis.yml',
+        'dest' => __DIR__ . '/../../../../.travis.yml',
+    ],
+    [
+        'src' => __DIR__ . '/../.circleci/config.yml',
+        'dest' => __DIR__ . '/../../../../.circleci/config.yml',
+    ],
+];
+
+foreach ($filesToBeCopied as $paths) {
+    if (file_exists($paths['dest'])) {
+        echo sprintf('"%s" already exists.' . PHP_EOL . 'Please merge with "%s" manually.' . PHP_EOL, realpath($paths['dest']), realpath($paths['src']));
+    } else {
+        if (!file_exists($dir = dirname($paths['dest']))) {
+            mkdir($dir, 0777, true);
+        }
+        copy($paths['src'], $paths['dest']);
+    }
+
+    $content = file_get_contents($paths['dest']);
+    $content = str_replace('<appname>', $appname, $content);
+    file_put_contents($paths['dest'], $content);
+}
